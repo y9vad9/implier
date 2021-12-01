@@ -34,7 +34,7 @@ deploy {
         componentName = "kotlin"
         group = AppInfo.PACKAGE
         version = AppInfo.VERSION
-        artifactId = "ksp-implementation"
+        artifactId = "ksp"
         name = "implier ksp-implementation"
         description = "Kotlin codegeneration library for Mutable & Immutable objects from interfaces."
     }
