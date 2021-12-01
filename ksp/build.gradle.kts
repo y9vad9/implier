@@ -1,24 +1,18 @@
-import org.jetbrains.kotlin.konan.properties.loadProperties
-
 plugins {
     id(Deps.Plugins.Configuration.Kotlin.Mpp)
     id(Deps.Plugins.Deploy.Id)
 }
 
-group = AppInfo.PACKAGE
-version = AppInfo.VERSION
-
-allprojects {
-    repositories {
-        mavenCentral()
-    }
-}
-
 kotlin {
     jvm()
-
     sourceSets {
-        val commonMain by getting {
+        val jvmMain by getting {
+            dependencies {
+                implementation(Deps.Libs.KSP.Api)
+                implementation(Deps.Libs.KotlinPoet)
+                implementation(Deps.Libs.Kotlin.Reflection)
+                implementation(project(":"))
+            }
             kotlin.srcDir("src/main/kotlin")
             resources.srcDir("src/main/resources")
         }
@@ -31,7 +25,7 @@ deploy {
     if (!deployProperties.exists())
         ignore = true
     else {
-        val properties = loadProperties(deployProperties.absolutePath)
+        val properties = org.jetbrains.kotlin.konan.properties.loadProperties(deployProperties.absolutePath)
         host = properties["host"] as String?
         user = properties["user"] as String?
         password = properties["password"] as String?
@@ -40,8 +34,8 @@ deploy {
         componentName = "kotlin"
         group = AppInfo.PACKAGE
         version = AppInfo.VERSION
-        artifactId = "implier"
-        name = "implier"
+        artifactId = "ksp-implementation"
+        name = "implier ksp-implementation"
         description = "Kotlin codegeneration library for Mutable & Immutable objects from interfaces."
     }
 }

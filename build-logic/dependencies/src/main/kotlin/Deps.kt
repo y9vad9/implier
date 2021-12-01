@@ -3,7 +3,7 @@
 object Deps {
     const val compileSdkVersion = 31
     const val minSdkVersion = 21
-    
+
     private const val kotlinVersion = "1.6.0"
     private const val coroutinesVersion = "1.6.0-RC"
     private const val serializationVersion = "1.3.1"
@@ -17,7 +17,7 @@ object Deps {
     private const val slf4jJVersion = "1.7.32"
     private const val logbackVersion = "1.2.6"
     private const val sshVersion = "2.10.1"
-    
+
     private const val materialVersion = "1.5.0-alpha03"
     private const val recyclerViewVersion = "1.3.0-alpha01"
     private const val swipeRefreshLayoutVersion = "1.2.0"
@@ -33,22 +33,37 @@ object Deps {
 
     private const val kdsVer = "1.1.0"
     private const val scriptKtVer = "0.0.2"
+    private const val kspVersion = "1.6.0-1.0.1"
 
     object Libs {
+
+        object KSP {
+            const val Api = "com.google.devtools.ksp:symbol-processing-api:$kspVersion"
+        }
+
+        object Kotlin {
+            const val Reflection = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+            const val JUnit = "org.jetbrains.kotlin:kotlin-test-junit5:$kotlinVersion"
+        }
+
+        const val KotlinPoet = "com.squareup:kotlinpoet:1.10.2"
 
         object KotlinGang {
             object KDS {
                 const val FileDataStorage = "fun.kotlingang.kds:json-files:$kdsVer"
                 const val LocalDataStorage = "fun.kotlingang.kds:json-files:$kdsVer"
                 const val BundleDataStorage = "fun.kotlingang.kds:json-bundle:$kdsVer"
+
                 object Integrations {
                     const val Androidx = "fun.kotlingang.kds:extensions-androidx:$kdsVer"
                     const val Coroutines = "fun.kotlingang.kds:extensions-coroutines:$kdsVer"
                     const val KVision = "fun.kotlingang.kds:extensions-kvision:$kdsVer"
                 }
+
                 const val Core = "fun.kotlingang.kds:core:$kdsVer"
                 const val Json = "fun.kotlingang.kds:json:$kdsVer"
             }
+
             object ScriptKt {
                 const val Wrapper = "fun.kotlingang.scriptkt:scriptkt:$scriptKtVer"
                 const val ImportScript = "fun.kotlingang.scriptkt:import-script:$scriptKtVer"
@@ -91,12 +106,14 @@ object Deps {
             const val Datetime = "org.jetbrains.kotlinx:kotlinx-datetime:$datetimeVersion"
             const val Nodejs = "org.jetbrains.kotlinx:kotlinx-nodejs:$nodejsExternalsVersion"
         }
+
         object Ktor {
             object Client {
                 const val Core = "io.ktor:ktor-client-core:$ktorVersion"
                 const val Cio = "io.ktor:ktor-client-cio:$ktorVersion"
                 const val Serialization = "io.ktor:ktor-client-serialization:$ktorVersion"
             }
+
             object Server {
                 const val Core = "io.ktor:ktor-server-core:$ktorVersion"
                 const val Cio = "io.ktor:ktor-server-cio:$ktorVersion"
@@ -104,20 +121,25 @@ object Deps {
                 const val Openapi = "com.github.papsign:Ktor-OpenAPI-Generator:$ktorOpenapiVersion"
             }
         }
+
         object Exposed {
             const val Core = "org.jetbrains.exposed:exposed-core:$exposedVersion"
             const val Jdbc = "org.jetbrains.exposed:exposed-jdbc:$exposedVersion"
             const val Time = "org.jetbrains.exposed:exposed-java-time:$exposedVersion"
         }
+
         object Postgres {
             const val Jdbc = "org.postgresql:postgresql:$postgresqlVersion"
         }
+
         object Logback {
-            const val Classic = "ch.qos.logback:logback-classic:$logbackVersion"    
+            const val Classic = "ch.qos.logback:logback-classic:$logbackVersion"
         }
+
         object Slf4j {
             const val Simple = "org.slf4j:slf4j-simple:$slf4jJVersion"
         }
+
         object Androidx {
             const val AppCompat =
                 "androidx.appcompat:appcompat:$androidAppCompatVersion"
@@ -145,32 +167,43 @@ object Deps {
                 const val Activity = "androidx.activity:activity-compose:1.4.0-alpha02"
             }
         }
+
         object Bumtech {
             const val Glide =
                 "com.github.bumptech.glide:glide:$glideVersion"
         }
     }
+
     object Kapt {
         object Bumtech {
             const val Glide = "com.github.bumptech.glide:compiler:$glideVersion"
         }
     }
+
     object Plugins {
         object Configuration {
             object Kotlin {
                 const val Mpp = "k-mpp"
                 const val Jvm = "k-jvm"
                 const val Js = "k-js"
+
                 object Android {
                     const val App = "k-android-app"
                     const val Library = "k-android-library"
                 }
             }
         }
+
+        object KSP {
+            const val Id = "com.google.devtools.ksp"
+            const val Classpath = "com.google.devtools.ksp:symbol-processing-gradle-plugin:$kspVersion"
+        }
+
         object Dependencies {
             const val Id = "dependencies"
             const val Classpath = "dependencies:dependencies:SNAPSHOT"
         }
+
         object Kotlin {
             const val Multiplatform = "org.jetbrains.kotlin.multiplatform"
             const val Jvm = "org.jetbrains.kotlin.jvm"
@@ -178,32 +211,43 @@ object Deps {
             const val Android = "org.jetbrains.kotlin.android"
             const val Classpath = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         }
+
         object Android {
             const val Application = "com.android.application"
             const val Library = "com.android.library"
             const val Classpath = "com.android.tools.build:gradle:$androidGradlePluginVersion"
         }
+
         object Serialization {
             const val Id = "org.jetbrains.kotlin.plugin.serialization"
             const val Classpath = "org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion"
         }
+
         object Ssh {
             const val Id = "org.hidetake.ssh"
             const val Classpath = "org.hidetake:gradle-ssh-plugin:$sshVersion"
         }
+
         object Publish {
             const val Id = "publish"
             const val Classpath = "publish:publish:SNAPSHOT"
         }
+
         object MavenPublish {
             const val Id = "maven-publish"
         }
+
         object Application {
             const val Id = "application"
         }
+
         object Shadow {
             const val Classpath = "gradle.plugin.com.github.jengelman.gradle.plugins:shadow:$shadowVer"
             const val Id = "com.github.johnrengelman.shadow"
+        }
+
+        object Deploy {
+            const val Id = "library-deploy"
         }
     }
 }

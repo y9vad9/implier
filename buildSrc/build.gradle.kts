@@ -7,6 +7,6 @@ repositories {
     mavenCentral()
 }
 
-dependencies  {
+dependencies {
     implementation(Deps.Plugins.Dependencies.Classpath)
 }
