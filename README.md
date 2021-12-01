@@ -45,6 +45,6 @@ And then we need to add dependency:
 ```kotlin
 dependencies {
     implementation("com.y9vad9.implier:implier:$version") // annotations
-    ksp("com.y9vad9.implier:ksp-implementation:$version") // ksp implementation of annotations
+    ksp("com.y9vad9.implier:ksp:$version") // ksp implementation of annotations
 }
 ```
