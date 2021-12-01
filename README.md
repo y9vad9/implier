@@ -36,7 +36,7 @@ For first, we need to add repository:
 
 ```kotlin
 repositories {
-    maven("https://maven.y9vad9.fun")
+    maven("https://maven.y9vad9.com")
 }
 ```
 
