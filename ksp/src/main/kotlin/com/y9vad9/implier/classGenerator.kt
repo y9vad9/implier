@@ -38,3 +38,25 @@ internal fun generateVariant(prefix: String, mutable: Boolean, declaration: KSCl
     file.addType(classDeclaration.build())
     return file.build()
 }
+
+internal fun generateFactory(variantName: String, declaration: KSClassDeclaration): FileSpec {
+    val className = ClassName(declaration.packageName.asString(), declaration.simpleName.asString())
+    val arguments = mutableListOf<String>()
+    return FileSpec.builder(declaration.packageName.asString(), "${className}Factory")
+        .addFunction(
+            FunSpec.builder(declaration.simpleName.asString())
+                .apply {
+                    for (property in declaration.getAllProperties()) {
+                        val resolved = property.type.resolve().declaration
+                        addParameter(
+                            property.simpleName.asString(),
+                            ClassName(resolved.packageName.asString(), resolved.simpleName.asString())
+                        )
+                        arguments += property.simpleName.asString()
+                    }
+                }
+                .returns(className)
+                .addCode("return $variantName${className.simpleName}(${arguments.joinToString(", ")})")
+                .build()
+        ).build()
+}

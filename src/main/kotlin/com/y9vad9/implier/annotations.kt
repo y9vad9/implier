@@ -16,3 +16,10 @@ annotation class MutableImpl
  */
 @Target(allowedTargets = [AnnotationTarget.CLASS])
 annotation class ImmutableImpl
+
+/**
+ * Marks that object should have factory-function with hidden realization.
+ * To make it works, you should use at least one of mutable / immutable annotations.
+ */
+@Target(allowedTargets = [AnnotationTarget.CLASS])
+annotation class FactoryFunctionImpl
