@@ -14,8 +14,6 @@ class AnnotationsVisitor(private val codeGenerator: CodeGenerator) : KSVisitorVo
     @OptIn(KspExperimental::class)
     override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
         super.visitAnnotated(classDeclaration, data)
-        if (classDeclaration.classKind != ClassKind.INTERFACE)
-            throw IllegalStateException("Annotated element should be interface")
         if (classDeclaration.isAnnotationPresent(MutableImpl::class)) {
             MutableAnnotatedClassProcessor.process(codeGenerator, classDeclaration)
         }
