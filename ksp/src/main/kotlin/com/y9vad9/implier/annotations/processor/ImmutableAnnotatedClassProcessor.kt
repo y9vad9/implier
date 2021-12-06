@@ -8,7 +8,7 @@ import com.y9vad9.implier.generateVariant
 import java.io.OutputStreamWriter
 
 object ImmutableAnnotatedClassProcessor : AnnotatedClassProcessor<ImmutableImpl> {
-    override fun process(codeGenerator: CodeGenerator, classDeclaration: KSClassDeclaration) {
+    override fun process(annotation: ImmutableImpl, codeGenerator: CodeGenerator, classDeclaration: KSClassDeclaration) {
         codeGenerator.createNewFile(
             Dependencies(false),
             classDeclaration.packageName.asString(),

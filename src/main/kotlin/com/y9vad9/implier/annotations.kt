@@ -23,3 +23,17 @@ annotation class ImmutableImpl
  */
 @Target(allowedTargets = [AnnotationTarget.CLASS])
 annotation class FactoryFunctionImpl
+
+/**
+ * Marks that object should have Builder implementation.
+ * To make it works, you should use at least one of mutable / immutable
+ * annotations (type will be hidden behind interface / abstract class). Immutable preferred.
+ *
+ * @param type - methods generation type (with accessors set/get, or just `property(value)`)
+ */
+@Target(allowedTargets = [AnnotationTarget.CLASS])
+annotation class BuilderImpl(val type: Type = Type.WITHOUT_ACCESSORS) {
+    enum class Type {
+        WITH_ACCESSORS, WITHOUT_ACCESSORS
+    }
+}

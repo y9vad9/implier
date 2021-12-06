@@ -4,5 +4,5 @@ import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 
 interface AnnotatedClassProcessor<T : Annotation> {
-    fun process(codeGenerator: CodeGenerator, classDeclaration: KSClassDeclaration)
+    fun process(annotation: T, codeGenerator: CodeGenerator, classDeclaration: KSClassDeclaration)
 }

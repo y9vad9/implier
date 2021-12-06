@@ -11,7 +11,7 @@ import java.io.OutputStreamWriter
 
 object FactoryFunctionAnnotatedClassProcessor : AnnotatedClassProcessor<FactoryFunctionImpl> {
     @OptIn(KspExperimental::class)
-    override fun process(codeGenerator: CodeGenerator, classDeclaration: KSClassDeclaration) {
+    override fun process(annotation: FactoryFunctionImpl, codeGenerator: CodeGenerator, classDeclaration: KSClassDeclaration) {
         val variantName = if(classDeclaration.isAnnotationPresent(ImmutableImpl::class))
             "Immutable"
         else if(classDeclaration.isAnnotationPresent(MutableImpl::class))

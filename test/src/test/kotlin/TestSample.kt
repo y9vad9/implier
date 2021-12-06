@@ -17,4 +17,15 @@ object TestSample {
             Sample("string", 1).toMutable().toImmutable()
         }
     }
+    @Test
+    fun testBuilder() {
+        assertDoesNotThrow {
+            SampleBuilder()
+                .number(0)
+                .sample("something")
+                .build()
+                .toMutable()
+                .toImmutable()
+        }
+    }
 }
