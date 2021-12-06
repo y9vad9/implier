@@ -15,7 +15,10 @@ class ImplierAnnotationProcessor(private val codeGenerator: CodeGenerator) : Sym
     override fun process(resolver: Resolver): List<KSAnnotated> {
         val annotations: Sequence<KSDeclaration> =
             resolver.getAllFiles().flatMap { it.declarations }.filter {
-                it.isAnnotationPresent(MutableImpl::class) || it.isAnnotationPresent(ImmutableImpl::class)
+                it.isAnnotationPresent(MutableImpl::class)
+                    || it.isAnnotationPresent(ImmutableImpl::class)
+                    || it.isAnnotationPresent(FactoryFunctionImpl::class
+                )
             }
 
         if (invoked) {
