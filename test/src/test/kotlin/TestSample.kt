@@ -28,4 +28,13 @@ object TestSample {
                 .toImmutable()
         }
     }
+    @Test
+    fun dslTest() {
+        assertDoesNotThrow {
+            sampleDSL {
+                sample = "Something"
+                number = Int.MAX_VALUE
+            }.toImmutable().toMutable()
+        }
+    }
 }

@@ -6,10 +6,7 @@ import com.google.devtools.ksp.isAnnotationPresent
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSVisitorVoid
-import com.y9vad9.implier.annotations.processor.BuilderImplAnnotatedClassProcessor
-import com.y9vad9.implier.annotations.processor.FactoryFunctionAnnotatedClassProcessor
-import com.y9vad9.implier.annotations.processor.ImmutableAnnotatedClassProcessor
-import com.y9vad9.implier.annotations.processor.MutableAnnotatedClassProcessor
+import com.y9vad9.implier.annotations.processor.*
 
 class AnnotationsVisitor(private val codeGenerator: CodeGenerator) : KSVisitorVoid() {
     @OptIn(KspExperimental::class)
@@ -37,6 +34,13 @@ class AnnotationsVisitor(private val codeGenerator: CodeGenerator) : KSVisitorVo
         if (classDeclaration.isAnnotationPresent(BuilderImpl::class)) {
             BuilderImplAnnotatedClassProcessor.process(
                 classDeclaration.getAnnotationsByType(BuilderImpl::class).first(),
+                codeGenerator,
+                classDeclaration
+            )
+        }
+        if (classDeclaration.isAnnotationPresent(DSLImpl::class)) {
+            DSLImplAnnotatedClassProcessor.process(
+                classDeclaration.getAnnotationsByType(DSLImpl::class).first(),
                 codeGenerator,
                 classDeclaration
             )
