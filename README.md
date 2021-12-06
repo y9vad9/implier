@@ -2,7 +2,7 @@
 
 # implier
 
-Kotlin Symbol Processor plugin to create `Mutable` and `Immutable` variants of objects.
+Kotlin Symbol Processor plugin for creating [**Mutable**](https://github.com/y9vad9/implier/blob/fb5cba3c62defe23ce5773287fc9f37367d800fd/src/main/kotlin/com/y9vad9/implier/annotations.kt#L10), [**Immutable**](https://github.com/y9vad9/implier/blob/fb5cba3c62defe23ce5773287fc9f37367d800fd/src/main/kotlin/com/y9vad9/implier/annotations.kt#L18), [**Builders**](https://github.com/y9vad9/implier/blob/fb5cba3c62defe23ce5773287fc9f37367d800fd/src/main/kotlin/com/y9vad9/implier/annotations.kt#L35), [**DSL Builders**](https://github.com/y9vad9/implier/blob/1.0.1/src/main/kotlin/com/y9vad9/implier/annotations.kt#L50) from interfaces & abstract classes with properties.
 
 ## Examples
 
@@ -17,15 +17,15 @@ public interface Sample {
 Will generate next classes and functions:
 
 ```kotlin
-public fun Sample.toImmutable(): ImmutableSample = ImmutableSample(sample)
+fun Sample.toImmutable(): ImmutableSample = ImmutableSample(sample)
 
-public class ImmutableSample(
+class ImmutableSample(
     public override val sample: String
 ) : Sample
 
-public fun Sample.toMutable(): MutableSample = MutableSample(sample)
+fun Sample.toMutable(): MutableSample = MutableSample(sample)
 
-public class MutableSample(
+class MutableSample(
     public override var sample: String
 ) : Sample
 ```
@@ -36,7 +36,7 @@ For first, we need to add repository:
 
 ```kotlin
 repositories {
-    maven("https://maven.y9vad9.fun")
+    maven("https://maven.y9vad9.com")
 }
 ```
 
