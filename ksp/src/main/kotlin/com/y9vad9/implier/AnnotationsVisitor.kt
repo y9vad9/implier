@@ -38,9 +38,9 @@ class AnnotationsVisitor(private val codeGenerator: CodeGenerator) : KSVisitorVo
                 classDeclaration
             )
         }
-        if (classDeclaration.isAnnotationPresent(DSLImpl::class)) {
+        if (classDeclaration.isAnnotationPresent(DSLBuilderImpl::class)) {
             DSLImplAnnotatedClassProcessor.process(
-                classDeclaration.getAnnotationsByType(DSLImpl::class).first(),
+                classDeclaration.getAnnotationsByType(DSLBuilderImpl::class).first(),
                 codeGenerator,
                 classDeclaration
             )

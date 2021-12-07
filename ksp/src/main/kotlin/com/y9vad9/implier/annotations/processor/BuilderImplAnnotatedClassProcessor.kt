@@ -46,7 +46,8 @@ private fun generateBuilderImplementation(
         declaration.packageName.asString(),
         declaration.simpleName.asString().plus("Builder")
     )
-    val builderClassName = ClassName(declaration.packageName.asString(), declaration.simpleName.asString().plus("Builder"))
+    val builderClassName =
+        ClassName(declaration.packageName.asString(), declaration.simpleName.asString().plus("Builder"))
     val builderClass = TypeSpec.classBuilder(file.name)
     for (member in declaration.getAllProperties()) {
         val resolvedMember = member.type.resolve()
