@@ -6,15 +6,15 @@ import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.squareup.kotlinpoet.*
-import com.y9vad9.implier.DSLImpl
+import com.y9vad9.implier.DSLBuilderImpl
 import com.y9vad9.implier.ImmutableImpl
 import com.y9vad9.implier.MutableImpl
 import java.io.OutputStreamWriter
 import java.util.*
 
-object DSLImplAnnotatedClassProcessor : AnnotatedClassProcessor<DSLImpl> {
+object DSLImplAnnotatedClassProcessor : AnnotatedClassProcessor<DSLBuilderImpl> {
     @OptIn(KspExperimental::class)
-    override fun process(annotation: DSLImpl, codeGenerator: CodeGenerator, classDeclaration: KSClassDeclaration) {
+    override fun process(annotation: DSLBuilderImpl, codeGenerator: CodeGenerator, classDeclaration: KSClassDeclaration) {
         if (!(classDeclaration.isAnnotationPresent(ImmutableImpl::class)
                 && classDeclaration.isAnnotationPresent(MutableImpl::class))
         )
@@ -39,7 +39,7 @@ object DSLImplAnnotatedClassProcessor : AnnotatedClassProcessor<DSLImpl> {
 }
 
 private fun generateDSLImplementation(
-    type: DSLImpl.Type,
+    type: DSLBuilderImpl.Type,
     functionName: String,
     initVariantCode: String,
     declaration: KSClassDeclaration
@@ -58,7 +58,7 @@ private fun generateDSLImplementation(
             resolvedMember.declaration.simpleName.asString()
         )
         when (type) {
-            DSLImpl.Type.PROPERTY_ACCESS -> builderClass.addProperty(
+            DSLBuilderImpl.Type.PROPERTY_ACCESS -> builderClass.addProperty(
                 PropertySpec.builder(member.simpleName.asString(), memberType)
                     .mutable(true)
                     .delegate("kotlin.properties.Delegates.notNull()")
@@ -74,7 +74,7 @@ private fun generateDSLImplementation(
                 )
                 builderClass.addFunction(
                     FunSpec.builder(
-                        if (type == DSLImpl.Type.WITHOUT_ACCESSORS) member.simpleName.asString() else "set${
+                        if (type == DSLBuilderImpl.Type.WITHOUT_ACCESSORS) member.simpleName.asString() else "set${
                             member.simpleName.asString()
                                 .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
                         }"

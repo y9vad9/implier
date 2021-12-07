@@ -17,7 +17,8 @@ class ImplierAnnotationProcessor(private val codeGenerator: CodeGenerator) : Sym
             resolver.getAllFiles().flatMap { it.declarations }.filter {
                 it.isAnnotationPresent(MutableImpl::class)
                     || it.isAnnotationPresent(ImmutableImpl::class)
-                    || it.isAnnotationPresent(FactoryFunctionImpl::class
+                    || it.isAnnotationPresent(
+                    FactoryFunctionImpl::class
                 )
             }
 

@@ -11,12 +11,14 @@ object TestSample {
             MutableSample("value", 1).toImmutable().toMutable()
         }
     }
+
     @Test
     fun testFactory() {
         assertDoesNotThrow {
             Sample("string", 1).toMutable().toImmutable()
         }
     }
+
     @Test
     fun testBuilder() {
         assertDoesNotThrow {
@@ -28,6 +30,7 @@ object TestSample {
                 .toImmutable()
         }
     }
+
     @Test
     fun dslTest() {
         assertDoesNotThrow {

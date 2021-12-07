@@ -9,7 +9,8 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(Deps.Libs.KSP.Api)
-                implementation(Deps.Libs.KotlinPoet)
+                implementation(Deps.Libs.KotlinPoet.KotlinPoet)
+                implementation(Deps.Libs.KotlinPoet.KSP)
                 implementation(Deps.Libs.Kotlin.Reflection)
                 implementation(project(":"))
             }
