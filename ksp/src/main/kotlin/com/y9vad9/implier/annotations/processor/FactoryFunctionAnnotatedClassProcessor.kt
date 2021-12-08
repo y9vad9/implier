@@ -10,7 +10,6 @@ import com.y9vad9.implier.ImmutableImpl
 import com.y9vad9.implier.MutableImpl
 import com.y9vad9.implier.codegen.FunctionFactoryFileCodeGeneration
 import com.y9vad9.implier.codegen.FunctionFactoryFileCodeGeneration.generate
-import com.y9vad9.implier.generateFactory
 import java.io.OutputStreamWriter
 
 object FactoryFunctionAnnotatedClassProcessor : AnnotatedClassProcessor<FactoryFunctionImpl> {

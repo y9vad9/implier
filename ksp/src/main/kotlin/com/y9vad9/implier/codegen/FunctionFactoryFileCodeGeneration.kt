@@ -29,11 +29,15 @@ object FunctionFactoryFileCodeGeneration : FileCodeGeneration<FunctionFactoryFil
                 FunSpec.builder(simpleName)
                     .returns(declaration.toClassName())
                     .addParameters(generateParameters())
-                    .addCode("return $realizationName${simpleName.replaceFirstChar {
-                        if (it.isLowerCase()) it.titlecase(
-                            Locale.getDefault()
-                        ) else it.toString()
-                    }}(${formatConstructorArguments()})")
+                    .addCode(
+                        "return $realizationName${
+                            simpleName.replaceFirstChar {
+                                if (it.isLowerCase()) it.titlecase(
+                                    Locale.getDefault()
+                                ) else it.toString()
+                            }
+                        }(${formatConstructorArguments()})"
+                    )
                     .build()
             )
             .build()
