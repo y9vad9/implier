@@ -2,13 +2,11 @@
 
 # implier
 
-Kotlin Symbol Processor library for creating [**
-Mutable**](https://github.com/y9vad9/implier/blob/fb5cba3c62defe23ce5773287fc9f37367d800fd/src/main/kotlin/com/y9vad9/implier/annotations.kt#L10)
-, [**
-Immutable**](https://github.com/y9vad9/implier/blob/fb5cba3c62defe23ce5773287fc9f37367d800fd/src/main/kotlin/com/y9vad9/implier/annotations.kt#L18)
-, [**
-Builders**](https://github.com/y9vad9/implier/blob/fb5cba3c62defe23ce5773287fc9f37367d800fd/src/main/kotlin/com/y9vad9/implier/annotations.kt#L35)
-, [**DSL Builders**](https://github.com/y9vad9/implier/blob/1.0.1/src/main/kotlin/com/y9vad9/implier/annotations.kt#L50)
+Kotlin Symbol Processor library for creating **[
+Mutable](https://github.com/y9vad9/implier/blob/fb5cba3c62defe23ce5773287fc9f37367d800fd/src/main/kotlin/com/y9vad9/implier/annotations.kt#L10)**, 
+**[Immutable](https://github.com/y9vad9/implier/blob/fb5cba3c62defe23ce5773287fc9f37367d800fd/src/main/kotlin/com/y9vad9/implier/annotations.kt#L18)**, 
+**[Builders](https://github.com/y9vad9/implier/blob/fb5cba3c62defe23ce5773287fc9f37367d800fd/src/main/kotlin/com/y9vad9/implier/annotations.kt#L35)**
+, **[DSL Builders](https://github.com/y9vad9/implier/blob/1.0.1/src/main/kotlin/com/y9vad9/implier/annotations.kt#L50)**
 from interfaces & abstract classes with properties.
 
 ## Examples
