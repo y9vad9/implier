@@ -46,7 +46,10 @@ object Deps {
             const val JUnit = "org.jetbrains.kotlin:kotlin-test-junit5:$kotlinVersion"
         }
 
-        const val KotlinPoet = "com.squareup:kotlinpoet:1.10.2"
+        object KotlinPoet {
+            const val KotlinPoet = "com.squareup:kotlinpoet:1.10.2"
+            const val KSP = "com.squareup:kotlinpoet-ksp:1.10.2"
+        }
 
         object KotlinGang {
             object KDS {

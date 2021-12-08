@@ -47,7 +47,7 @@ annotation class BuilderImpl(val type: Type = Type.WITHOUT_ACCESSORS) {
  * @param type - methods generation type (with accessors set / `property(value) or just property-access`)
  */
 @Target(allowedTargets = [AnnotationTarget.CLASS])
-annotation class DSLImpl(val functionName: String, val type: Type = Type.PROPERTY_ACCESS) {
+annotation class DSLBuilderImpl(val functionName: String, val type: Type = Type.PROPERTY_ACCESS) {
     enum class Type {
         PROPERTY_ACCESS, WITH_ACCESSORS, WITHOUT_ACCESSORS
     }
