@@ -32,7 +32,8 @@ object BuilderImplAnnotatedClassProcessor : AnnotatedClassProcessor<BuilderImpl>
                     initVariantCode = (if (!(classDeclaration.isAnnotationPresent(ImmutableImpl::class))) "Immutable" else "Mutable").plus(
                         classDeclaration.simpleName.asString()
                     ),
-                    classDeclaration
+                    visibility = annotation.visibility,
+                    declaration = classDeclaration
                 ).generate().writeTo(writer)
             }
         }

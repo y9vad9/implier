@@ -33,7 +33,7 @@ object FactoryFunctionAnnotatedClassProcessor : AnnotatedClassProcessor<FactoryF
                 classDeclaration.simpleName.asString().plus("Factory")
             ).use { output ->
                 OutputStreamWriter(output).use { writer ->
-                    FunctionFactoryFileCodeGeneration.Data(variantName, classDeclaration)
+                    FunctionFactoryFileCodeGeneration.Data(variantName, annotation.visibility, classDeclaration)
                         .generate()
                         .writeTo(writer)
                 }

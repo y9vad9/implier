@@ -5,12 +5,14 @@ import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ksp.KotlinPoetKspPreview
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.y9vad9.implier.DSLBuilderImpl
+import com.y9vad9.implier.Visibility
 import java.util.*
 
 object DSLFileCodeGeneration : FileCodeGeneration<DSLFileCodeGeneration.Data> {
     class Data(
         private val type: DSLBuilderImpl.Type,
         val initVariantCode: String,
+        val visibility: Visibility,
         val functionName: String,
         declaration: KSClassDeclaration
     ) :
@@ -61,21 +63,23 @@ object DSLFileCodeGeneration : FileCodeGeneration<DSLFileCodeGeneration.Data> {
 
         @OptIn(KotlinPoetKspPreview::class)
         fun FileSpec.Builder.addDSLFunction(): FileSpec.Builder {
-            addFunction(FunSpec.builder(functionName).addParameter(
-                "block",
-                LambdaTypeName.get(
-                    receiver = ClassName(packageName, name), returnType = Unit::class.asTypeName()
-                )
-            ).addCode(
-                """
+            addFunction(FunSpec.builder(functionName)
+                .addModifiers(if(visibility == Visibility.PUBLIC) KModifier.PUBLIC else KModifier.INTERNAL)
+                .addParameter(
+                    "block",
+                    LambdaTypeName.get(
+                        receiver = ClassName(packageName, name), returnType = Unit::class.asTypeName()
+                    )
+                ).addCode(
+                    """
                 val dslBuilder = $name()
                 dslBuilder.apply(block)
                 return $initVariantCode(${
-                    declaration.getAllProperties()
-                        .joinToString(",") { "dslBuilder." + it.simpleName.asString() }
-                })
+                        declaration.getAllProperties()
+                            .joinToString(",") { "dslBuilder." + it.simpleName.asString() }
+                    })
             """.trimIndent()
-            )
+                )
                 .returns(
                     declaration.toClassName()
                 )
@@ -89,6 +93,7 @@ object DSLFileCodeGeneration : FileCodeGeneration<DSLFileCodeGeneration.Data> {
         return FileSpec.builder(packageName, name)
             .addType(
                 TypeSpec.classBuilder(name)
+                    .addModifiers(if (visibility == Visibility.PUBLIC) KModifier.PUBLIC else KModifier.INTERNAL)
                     .applyMembers()
                     .build()
             )

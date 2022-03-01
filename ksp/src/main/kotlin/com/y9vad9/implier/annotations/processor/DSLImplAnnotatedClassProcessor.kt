@@ -37,7 +37,8 @@ object DSLImplAnnotatedClassProcessor : AnnotatedClassProcessor<DSLBuilderImpl> 
                         classDeclaration.simpleName.asString()
                     ),
                     functionName = annotation.functionName,
-                    declaration = classDeclaration
+                    declaration = classDeclaration,
+                    visibility = annotation.visibility
                 ).generate().writeTo(writer)
             }
         }

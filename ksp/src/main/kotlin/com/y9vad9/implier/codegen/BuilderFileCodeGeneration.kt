@@ -5,10 +5,11 @@ import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ksp.KotlinPoetKspPreview
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.y9vad9.implier.BuilderImpl
+import com.y9vad9.implier.Visibility
 import java.util.*
 
 object BuilderFileCodeGeneration : FileCodeGeneration<BuilderFileCodeGeneration.Data> {
-    class Data(private val type: BuilderImpl.Type, val initVariantCode: String, declaration: KSClassDeclaration) :
+    class Data(private val type: BuilderImpl.Type, val visibility: Visibility, val initVariantCode: String, declaration: KSClassDeclaration) :
         FileCodeGeneration.Data(declaration) {
         val name: String get() = simpleName.plus("Builder")
 
@@ -46,6 +47,7 @@ object BuilderFileCodeGeneration : FileCodeGeneration<BuilderFileCodeGeneration.
         return FileSpec.builder(packageName, simpleName)
             .addType(
                 TypeSpec.classBuilder(name)
+                    .addModifiers(if(visibility == Visibility.PUBLIC) KModifier.PUBLIC else KModifier.INTERNAL)
                     .applyMembers()
                     .addFunction(
                         FunSpec.builder("build")

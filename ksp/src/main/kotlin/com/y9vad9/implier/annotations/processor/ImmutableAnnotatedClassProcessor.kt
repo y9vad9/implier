@@ -29,7 +29,8 @@ object ImmutableAnnotatedClassProcessor : AnnotatedClassProcessor<ImmutableImpl>
             OutputStreamWriter(output).use { writer ->
                 ImplementationFileCodeGeneration.Data(
                     mutable = false,
-                    declaration = classDeclaration
+                    declaration = classDeclaration,
+                    visibility = annotation.visibility
                 ).generate().writeTo(writer)
             }
         }
