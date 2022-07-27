@@ -14,10 +14,6 @@ import kotlin.reflect.KClass
 
 object DtoFileCodeGeneration :
     FileCodeGeneration<DtoFileCodeGeneration.Data> {
-    fun s(){
-
-
-    }
     override fun Data.generate(): FileSpec {
         return FileSpec.builder(packageName, simpleName)
             .addType(
