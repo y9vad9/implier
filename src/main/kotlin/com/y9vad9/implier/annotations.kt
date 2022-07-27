@@ -1,6 +1,5 @@
 package com.y9vad9.implier
 
-
 /**
  * Marks that object should be able to mutate.
  * Generates `toMutable()` function for creating mutable variant of object and
@@ -60,3 +59,12 @@ annotation class DSLBuilderImpl(
         PROPERTY_ACCESS, WITH_ACCESSORS, WITHOUT_ACCESSORS
     }
 }
+
+/**
+ * Marks that object should be able to (partially) mutate using DTOs as patch objects.
+ * Generates `toDto()` function for creating mutable variant of object
+ * with nullable members and DTO variant of annotated interface.
+ * @param visibility - Visibility of generated class & function.
+ */
+@Target(allowedTargets = [AnnotationTarget.CLASS])
+annotation class DtoImpl(val visibility: Visibility = Visibility.PUBLIC)
