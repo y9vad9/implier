@@ -5,6 +5,7 @@ import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.symbol.ClassKind
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.Modifier
+import com.y9vad9.implier.Mutable
 import com.y9vad9.implier.MutableImpl
 import com.y9vad9.implier.codegen.ImplementationFileCodeGeneration
 import com.y9vad9.implier.codegen.ImplementationFileCodeGeneration.generate
@@ -23,7 +24,7 @@ object MutableAnnotatedClassProcessor : AnnotatedClassProcessor<MutableImpl> {
             "Mutable${classDeclaration.simpleName.asString()}"
         ).use { output ->
             OutputStreamWriter(output).use { writer ->
-                ImplementationFileCodeGeneration.Data(true, annotation.visibility, classDeclaration).generate()
+                ImplementationFileCodeGeneration.Data(marker = Mutable::class, annotation.visibility, classDeclaration).generate()
                     .writeTo(writer)
             }
         }
