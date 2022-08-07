@@ -74,7 +74,7 @@ object DtoFileCodeGeneration :
                     addProperty(
                         PropertySpec.builder(propertyName, propertyType)
                             .mutable(true)
-                            .initializer("$propertyName")
+                            .initializer(propertyName)
                             .build()
                     )
                 }
