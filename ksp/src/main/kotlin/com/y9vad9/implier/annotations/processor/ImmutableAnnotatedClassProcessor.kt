@@ -5,6 +5,7 @@ import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.symbol.ClassKind
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.Modifier
+import com.y9vad9.implier.Immutable
 import com.y9vad9.implier.ImmutableImpl
 import com.y9vad9.implier.codegen.ImplementationFileCodeGeneration
 import com.y9vad9.implier.codegen.ImplementationFileCodeGeneration.generate
@@ -28,7 +29,7 @@ object ImmutableAnnotatedClassProcessor : AnnotatedClassProcessor<ImmutableImpl>
         ).use { output ->
             OutputStreamWriter(output).use { writer ->
                 ImplementationFileCodeGeneration.Data(
-                    mutable = false,
+                    marker = Immutable::class,
                     declaration = classDeclaration,
                     visibility = annotation.visibility
                 ).generate().writeTo(writer)

@@ -45,5 +45,11 @@ class AnnotationsVisitor(private val codeGenerator: CodeGenerator) : KSVisitorVo
                 classDeclaration
             )
         }
+
+        if (classDeclaration.isAnnotationPresent(DtoImpl::class)) {
+            DtoAnnotatedClassProcessor.process(
+                classDeclaration.getAnnotationsByType(DtoImpl::class).first(), codeGenerator, classDeclaration
+            )
+        }
     }
 }
