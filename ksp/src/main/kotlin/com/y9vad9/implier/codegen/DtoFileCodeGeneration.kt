@@ -47,7 +47,6 @@ object DtoFileCodeGeneration :
             .build()
     }
 
-    @OptIn(KotlinPoetKspPreview::class)
     class Data(
         val marker: KClass<*>,
         val visibility: Visibility,
