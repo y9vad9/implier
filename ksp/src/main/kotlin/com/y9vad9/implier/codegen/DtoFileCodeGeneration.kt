@@ -13,13 +13,13 @@ object DtoFileCodeGeneration :
         return FileSpec.builder(packageName, simpleName)
             .addType(
                 TypeSpec.classBuilder(name)
-                    .addModifiers(if(visibility == Visibility.PUBLIC) KModifier.PUBLIC else KModifier.INTERNAL)
+                    .addModifiers(if (visibility == Visibility.PUBLIC) KModifier.PUBLIC else KModifier.INTERNAL)
                     .applyParent()
                     .applyConstructor()
                     .build()
             ).addFunction(
                 FunSpec.builder("toDto")
-                    .addModifiers(if(visibility == Visibility.PUBLIC) KModifier.PUBLIC else KModifier.INTERNAL)
+                    .addModifiers(if (visibility == Visibility.PUBLIC) KModifier.PUBLIC else KModifier.INTERNAL)
                     .receiver(ClassName(declaration.packageName.asString(), declaration.simpleName.asString()))
                     .returns(ClassName(declaration.packageName.asString(), name))
                     .addCode("return $name(${formatConstructorArguments()})")
@@ -27,7 +27,7 @@ object DtoFileCodeGeneration :
             ).addFunction(
                 FunSpec.builder("toPatched")
                     .addParameter("patch", className)
-                    .addModifiers(if(visibility == Visibility.PUBLIC) KModifier.PUBLIC else KModifier.INTERNAL)
+                    .addModifiers(if (visibility == Visibility.PUBLIC) KModifier.PUBLIC else KModifier.INTERNAL)
                     .receiver(ClassName(declaration.packageName.asString(), declaration.simpleName.asString()))
                     .returns(className)
                     .addCode(CodeBlock.builder()

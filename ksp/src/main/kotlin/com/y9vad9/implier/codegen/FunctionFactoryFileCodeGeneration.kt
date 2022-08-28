@@ -27,7 +27,7 @@ object FunctionFactoryFileCodeGeneration : FileCodeGeneration<FunctionFactoryFil
         return FileSpec.builder(packageName, name)
             .addFunction(
                 FunSpec.builder(simpleName)
-                    .addModifiers(if(visibility == Visibility.PUBLIC) KModifier.PUBLIC else KModifier.INTERNAL)
+                    .addModifiers(if (visibility == Visibility.PUBLIC) KModifier.PUBLIC else KModifier.INTERNAL)
                     .returns(declaration.toClassName())
                     .addParameters(generateParameters())
                     .addCode(

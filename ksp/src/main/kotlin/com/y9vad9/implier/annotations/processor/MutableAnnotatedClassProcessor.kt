@@ -24,7 +24,8 @@ object MutableAnnotatedClassProcessor : AnnotatedClassProcessor<MutableImpl> {
             "Mutable${classDeclaration.simpleName.asString()}"
         ).use { output ->
             OutputStreamWriter(output).use { writer ->
-                ImplementationFileCodeGeneration.Data(marker = Mutable::class, annotation.visibility, classDeclaration).generate()
+                ImplementationFileCodeGeneration.Data(marker = Mutable::class, annotation.visibility, classDeclaration)
+                    .generate()
                     .writeTo(writer)
             }
         }

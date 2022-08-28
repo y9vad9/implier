@@ -61,7 +61,7 @@ object DSLFileCodeGeneration : FileCodeGeneration<DSLFileCodeGeneration.Data> {
 
         fun FileSpec.Builder.addDSLFunction(): FileSpec.Builder {
             addFunction(FunSpec.builder(functionName)
-                .addModifiers(if(visibility == Visibility.PUBLIC) KModifier.PUBLIC else KModifier.INTERNAL)
+                .addModifiers(if (visibility == Visibility.PUBLIC) KModifier.PUBLIC else KModifier.INTERNAL)
                 .addParameter(
                     "block",
                     LambdaTypeName.get(
