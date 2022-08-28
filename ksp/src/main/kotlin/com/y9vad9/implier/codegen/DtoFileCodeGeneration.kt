@@ -1,15 +1,10 @@
 package com.y9vad9.implier.codegen
 
-import com.google.devtools.ksp.symbol.ClassKind
 import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.google.devtools.ksp.symbol.Modifier
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-import com.squareup.kotlinpoet.ksp.KotlinPoetKspPreview
 import com.squareup.kotlinpoet.ksp.toClassName
-import com.y9vad9.implier.Mutable
 import com.y9vad9.implier.Visibility
-import com.y9vad9.implier.codegen.DtoFileCodeGeneration.generate
 import kotlin.reflect.KClass
 
 object DtoFileCodeGeneration :
@@ -69,7 +64,7 @@ object DtoFileCodeGeneration :
                     val propertyName = property.simpleName.asString()
                     val propertyType = property.type.resolve().toClassName().copy(nullable = true)
                     addParameter(
-                        ParameterSpec.builder(propertyName, propertyType).build()
+                        ParameterSpec.builder(propertyName, propertyType).defaultValue("null").build()
                     )
                     addProperty(
                         PropertySpec.builder(propertyName, propertyType)

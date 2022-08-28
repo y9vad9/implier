@@ -2,7 +2,6 @@ package com.y9vad9.implier.codegen
 
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.squareup.kotlinpoet.*
-import com.squareup.kotlinpoet.ksp.KotlinPoetKspPreview
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.y9vad9.implier.BuilderImpl
 import com.y9vad9.implier.Visibility
@@ -13,7 +12,6 @@ object BuilderFileCodeGeneration : FileCodeGeneration<BuilderFileCodeGeneration.
         FileCodeGeneration.Data(declaration) {
         val name: String get() = simpleName.plus("Builder")
 
-        @OptIn(KotlinPoetKspPreview::class)
         fun TypeSpec.Builder.applyMembers(): TypeSpec.Builder {
             for (member in declaration.getAllProperties()) {
                 val resolvedMember = member.type.resolve()

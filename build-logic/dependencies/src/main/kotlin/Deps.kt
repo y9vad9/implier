@@ -4,7 +4,7 @@ object Deps {
     const val compileSdkVersion = 31
     const val minSdkVersion = 21
 
-    private const val kotlinVersion = "1.6.0"
+    private const val kotlinVersion = "1.7.20-Beta"
     private const val coroutinesVersion = "1.6.0-RC"
     private const val serializationVersion = "1.3.1"
     private const val nodejsExternalsVersion = "0.0.7"
@@ -33,7 +33,7 @@ object Deps {
 
     private const val kdsVer = "1.1.0"
     private const val scriptKtVer = "0.0.2"
-    private const val kspVersion = "1.6.10-1.0.4"
+    private const val kspVersion = "1.7.20-Beta-1.0.6"
 
     object Libs {
 
@@ -47,8 +47,8 @@ object Deps {
         }
 
         object KotlinPoet {
-            const val KotlinPoet = "com.squareup:kotlinpoet:1.10.2"
-            const val KSP = "com.squareup:kotlinpoet-ksp:1.10.2"
+            const val KotlinPoet = "com.squareup:kotlinpoet:1.12.0"
+            const val KSP = "com.squareup:kotlinpoet-ksp:1.12.0"
         }
 
         object KotlinGang {

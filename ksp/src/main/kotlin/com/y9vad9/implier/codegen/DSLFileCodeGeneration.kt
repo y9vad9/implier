@@ -2,7 +2,6 @@ package com.y9vad9.implier.codegen
 
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.squareup.kotlinpoet.*
-import com.squareup.kotlinpoet.ksp.KotlinPoetKspPreview
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.y9vad9.implier.DSLBuilderImpl
 import com.y9vad9.implier.Visibility
@@ -19,7 +18,6 @@ object DSLFileCodeGeneration : FileCodeGeneration<DSLFileCodeGeneration.Data> {
         FileCodeGeneration.Data(declaration) {
         val name: String get() = simpleName.plus("DSLBuilderScope")
 
-        @OptIn(KotlinPoetKspPreview::class)
         fun TypeSpec.Builder.applyMembers(): TypeSpec.Builder {
             for (member in declaration.getAllProperties())
                 when (type) {
@@ -61,7 +59,6 @@ object DSLFileCodeGeneration : FileCodeGeneration<DSLFileCodeGeneration.Data> {
             return this
         }
 
-        @OptIn(KotlinPoetKspPreview::class)
         fun FileSpec.Builder.addDSLFunction(): FileSpec.Builder {
             addFunction(FunSpec.builder(functionName)
                 .addModifiers(if(visibility == Visibility.PUBLIC) KModifier.PUBLIC else KModifier.INTERNAL)

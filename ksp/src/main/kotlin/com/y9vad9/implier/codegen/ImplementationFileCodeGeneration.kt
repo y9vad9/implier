@@ -4,7 +4,6 @@ import com.google.devtools.ksp.symbol.ClassKind
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-import com.squareup.kotlinpoet.ksp.KotlinPoetKspPreview
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.y9vad9.implier.*
 import kotlin.reflect.KClass
@@ -30,7 +29,6 @@ object ImplementationFileCodeGeneration :
             .build()
     }
 
-    @OptIn(KotlinPoetKspPreview::class)
     class Data(
         val marker: KClass<*>,
         val visibility: Visibility,

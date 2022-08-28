@@ -6,8 +6,8 @@ pluginManagement {
     }
 
     plugins {
-        id("org.jetbrains.kotlin.multiplatform") version "1.6.0"
-        id("com.google.devtools.ksp") version "1.6.0-1.0.1"
+        id("org.jetbrains.kotlin.multiplatform") version "1.7.20-Beta"
+        id("com.google.devtools.ksp") version "1.7.20-Beta-1.0.6"
     }
 }
 

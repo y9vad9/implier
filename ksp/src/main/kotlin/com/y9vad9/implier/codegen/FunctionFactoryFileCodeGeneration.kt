@@ -5,12 +5,10 @@ import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.ParameterSpec
-import com.squareup.kotlinpoet.ksp.KotlinPoetKspPreview
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.y9vad9.implier.Visibility
 import java.util.*
 
-@OptIn(KotlinPoetKspPreview::class)
 object FunctionFactoryFileCodeGeneration : FileCodeGeneration<FunctionFactoryFileCodeGeneration.Data> {
     class Data(val realizationName: String, val visibility: Visibility, declaration: KSClassDeclaration) :
         FileCodeGeneration.Data(declaration) {
