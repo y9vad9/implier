@@ -9,9 +9,12 @@ kotlin {
 
 dependencies {
     implementation(project(":"))
+    testImplementation(projects.ksp)
     testImplementation(libs.kotlin.test)
     testImplementation(libs.kotlin.test.junit5)
     testImplementation(libs.junit.jupiter)
+    testImplementation(libs.kct.core)
+    testImplementation(libs.kct.ksp)
     kspTest(projects.ksp)
 }
 
