@@ -6,6 +6,9 @@ import com.google.devtools.ksp.processing.SymbolProcessorProvider
 
 class ImplierProcessorProvider : SymbolProcessorProvider {
     override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
-        return ImplierAnnotationProcessor(environment.codeGenerator)
+        return ImplierProcessor(
+            codeGenerator = environment.codeGenerator,
+            logger = environment.logger,
+        )
     }
 }
