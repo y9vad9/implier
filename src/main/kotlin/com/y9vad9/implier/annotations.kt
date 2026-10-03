@@ -1,53 +1,62 @@
 package com.y9vad9.implier
 
 /**
- * Marks that object should be able to mutate.
- * Generates `toMutable()` function for creating mutable variant of object and
- * mutable variant of annotated interface.
- * @param visibility - Visibility of generated class & function.
+ * Marks that an object should have a mutable implementation generated.
+ * Generates `Mutable*` class and `toMutable()` extension function.
+ * Can be applied to interfaces or abstract classes.
+ *
+ * @param visibility Visibility of generated class & extension function.
  */
 @Target(allowedTargets = [AnnotationTarget.CLASS])
 annotation class MutableImpl(val visibility: Visibility = Visibility.PUBLIC)
 
 /**
- * Marks that object should be able to immutate.
- * Generates `toImmutable()` function for creating immutable variant of object and
- * mutable variant of annotated interface.
- * @param visibility - Visibility of generated class & function.
+ * Marks that an object should have an immutable implementation generated.
+ * Generates `Immutable*` class (data class for interfaces and no-arg abstract classes)
+ * and `toImmutable()` extension function.
+ * Can be applied to interfaces or abstract classes.
+ *
+ * @param visibility Visibility of generated class & extension function.
  */
 @Target(allowedTargets = [AnnotationTarget.CLASS])
 annotation class ImmutableImpl(val visibility: Visibility = Visibility.PUBLIC)
 
 /**
- * Marks that object should have factory-function with hidden realization.
- * To make it works, you should use at least one of mutable / immutable annotations.
+ * Marks that an object should have a factory function with hidden realization.
+ * Requires at least one of [ImmutableImpl] or [MutableImpl] on the same declaration
+ * (prefers [ImmutableImpl]).
+ *
+ * @param visibility Visibility of generated factory function.
  */
 @Target(allowedTargets = [AnnotationTarget.CLASS])
 annotation class FactoryFunctionImpl(val visibility: Visibility = Visibility.PUBLIC)
 
 /**
- * Marks that object should have Builder implementation.
- * To make it works, you should use at least one of mutable / immutable
- * annotations (type will be hidden behind interface / abstract class). Immutable preferred.
+ * Marks that an object should have a Builder implementation generated.
+ * Requires at least one of [ImmutableImpl] or [MutableImpl] on the same declaration
+ * (prefers [ImmutableImpl]).
  *
- * @param type - methods generation type (with accessors set, or just `property(value)`)
- * @param visibility - Visibility of generated class.
+ * @param type Methods generation type (with accessors `set*`, or just `property(value)`).
+ * @param visibility Visibility of generated builder class and methods.
  */
 @Target(allowedTargets = [AnnotationTarget.CLASS])
-annotation class BuilderImpl(val type: Type = Type.WITHOUT_ACCESSORS, val visibility: Visibility = Visibility.PUBLIC) {
+annotation class BuilderImpl(
+    val type: Type = Type.WITHOUT_ACCESSORS,
+    val visibility: Visibility = Visibility.PUBLIC
+) {
     enum class Type {
         WITH_ACCESSORS, WITHOUT_ACCESSORS
     }
 }
 
 /**
- * Marks that object should have DSL Builder implementation.
- * To make it works, you should use at least one of mutable / immutable
- * annotations (type will be hidden behind `interface` / `abstract class`). Immutable preferred.
+ * Marks that an object should have a DSL Builder implementation generated.
+ * Requires at least one of [ImmutableImpl] or [MutableImpl] on the same declaration
+ * (prefers [ImmutableImpl]).
  *
- * @param functionName - DSL function name (e.x: `myConfiguration {}`)
- * @param type - methods generation type (with accessors set / `property(value) or just property-access`)
- * @param visibility - Visibility of generated class & function.
+ * @param functionName DSL function name (e.g.: `myConfiguration {}`).
+ * @param type Methods generation type (property-access, accessors `set*`, or `property(value)`).
+ * @param visibility Visibility of generated builder class and DSL function.
  */
 @Target(allowedTargets = [AnnotationTarget.CLASS])
 annotation class DSLBuilderImpl(
@@ -61,10 +70,13 @@ annotation class DSLBuilderImpl(
 }
 
 /**
- * Marks that object should be able to (partially) mutate using DTOs as patch objects.
- * Generates `toDto()` function for creating mutable variant of object
- * with nullable members and DTO variant of annotated interface.
- * @param visibility - Visibility of generated class & function.
+ * Marks that an object should be able to (partially) mutate using DTOs as patch objects.
+ * Generates `toDto()` function for creating DTO variant of object with nullable members,
+ * and `toPatched(patch: Dto*)` function for applying patches.
+ * Requires at least one of [ImmutableImpl] or [MutableImpl] on the same declaration
+ * (prefers [ImmutableImpl]).
+ *
+ * @param visibility Visibility of generated DTO class & functions.
  */
 @Target(allowedTargets = [AnnotationTarget.CLASS])
 annotation class DtoImpl(val visibility: Visibility = Visibility.PUBLIC)
