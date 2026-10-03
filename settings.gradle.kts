@@ -25,4 +25,4 @@ dependencyResolutionManagement {
 rootProject.name = "implier"
 
 include(":ksp")
-include(":test")
+include(":integration-tests")

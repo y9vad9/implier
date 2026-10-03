@@ -11,6 +11,7 @@ class ImplierTest {
 
     @Test
     fun testImmutableRealizationAndDataClassBehavior() {
+        // GIVEN
         val sample1 = ImmutableSample(
             sample = "hello",
             number = 42,
@@ -24,29 +25,27 @@ class ImplierTest {
             list = listOf("a", "b")
         )
 
-        // Real property assertions
+        // WHEN
+        val modified = sample1.copy(number = 99, nullableField = "not-null")
+        val mutable = sample1.toMutable()
+
+        // THEN
         assertEquals("hello", sample1.sample)
         assertEquals(42, sample1.number)
         assertNull(sample1.nullableField)
         assertEquals(listOf("a", "b"), sample1.list)
 
-        // data class equals and hashCode
         assertEquals(sample1, sample2)
         assertEquals(sample1.hashCode(), sample2.hashCode())
 
-        // data class toString
         assertTrue(sample1.toString().startsWith("ImmutableSample("))
         assertTrue(sample1.toString().contains("sample=hello"))
 
-        // data class copy
-        val modified = sample1.copy(number = 99, nullableField = "not-null")
         assertEquals(99, modified.number)
         assertEquals("not-null", modified.nullableField)
         assertEquals("hello", modified.sample)
         assertNotEquals(sample1, modified)
 
-        // toMutable conversion
-        val mutable = sample1.toMutable()
         assertEquals(sample1.sample, mutable.sample)
         assertEquals(sample1.number, mutable.number)
         assertEquals(sample1.nullableField, mutable.nullableField)
@@ -55,6 +54,7 @@ class ImplierTest {
 
     @Test
     fun testMutableRealization() {
+        // GIVEN
         val mutable = MutableSample(
             sample = "initial",
             number = 10,
@@ -62,24 +62,19 @@ class ImplierTest {
             list = listOf("item")
         )
 
-        assertEquals("initial", mutable.sample)
-        assertEquals(10, mutable.number)
-        assertEquals("value", mutable.nullableField)
-        assertEquals(listOf("item"), mutable.list)
-
-        // Mutate fields
+        // WHEN
         mutable.sample = "mutated"
         mutable.number = 20
         mutable.nullableField = null
         mutable.list = listOf("item1", "item2")
+        val immutable = mutable.toImmutable()
 
+        // THEN
         assertEquals("mutated", mutable.sample)
         assertEquals(20, mutable.number)
         assertNull(mutable.nullableField)
         assertEquals(listOf("item1", "item2"), mutable.list)
 
-        // toImmutable conversion
-        val immutable = mutable.toImmutable()
         assertEquals("mutated", immutable.sample)
         assertEquals(20, immutable.number)
         assertNull(immutable.nullableField)
@@ -88,7 +83,7 @@ class ImplierTest {
 
     @Test
     fun testFactoryFunction() {
-        // Sample() factory prefers Immutable when both @ImmutableImpl and @MutableImpl are present
+        // GIVEN / WHEN
         val created = Sample(
             sample = "from-factory",
             number = 7,
@@ -96,52 +91,67 @@ class ImplierTest {
             list = listOf("one")
         )
 
+        // THEN
         assertEquals("from-factory", created.sample)
         assertEquals(7, created.number)
         assertEquals("test", created.nullableField)
         assertEquals(listOf("one"), created.list)
-        assertTrue(created is ImmutableSample, "Factory should instantiate Immutable realization by default")
+        assertTrue(created is ImmutableSample)
     }
 
     @Test
-    fun testBuilderWithNonNullAndNullableProperties() {
-        // Build with all properties set
-        val built = SampleBuilder()
+    fun testBuilderWithAllPropertiesSet() {
+        // GIVEN
+        val builder = SampleBuilder()
             .sample("builder-sample")
             .number(123)
             .nullableField("custom")
             .list(listOf("x", "y"))
-            .build()
 
+        // WHEN
+        val built = builder.build()
+
+        // THEN
         assertEquals("builder-sample", built.sample)
         assertEquals(123, built.number)
         assertEquals("custom", built.nullableField)
         assertEquals(listOf("x", "y"), built.list)
-        assertTrue(built is ImmutableSample, "Builder should instantiate ImmutableSample")
+        assertTrue(built is ImmutableSample)
+    }
 
-        // Build with nullableField omitted (should default to null without throwing)
-        val withNullOmitted = SampleBuilder()
+    @Test
+    fun testBuilderWithNullablePropertyOmitted() {
+        // GIVEN
+        val builder = SampleBuilder()
             .sample("omitted-nullable")
             .number(456)
             .list(emptyList())
-            .build()
 
-        assertEquals("omitted-nullable", withNullOmitted.sample)
-        assertEquals(456, withNullOmitted.number)
-        assertNull(withNullOmitted.nullableField, "Nullable property should default to null")
+        // WHEN
+        val built = builder.build()
 
-        // Non-null property omitted must throw IllegalStateException via Delegates.notNull()
+        // THEN
+        assertEquals("omitted-nullable", built.sample)
+        assertEquals(456, built.number)
+        assertNull(built.nullableField)
+    }
+
+    @Test
+    fun testBuilderThrowsWhenRequiredPropertyOmitted() {
+        // GIVEN
+        val builder = SampleBuilder()
+            .number(456)
+            .list(emptyList())
+
+        // WHEN / THEN
         assertThrows<IllegalStateException> {
-            SampleBuilder()
-                .number(456)
-                .list(emptyList())
-                .build()
+            builder.build()
         }
     }
 
     @Test
-    fun testDSLBuilderWithNonNullAndNullableProperties() {
-        // DSL with WITH_ACCESSORS: supports property access and set*
+    fun testDSLBuilderWithPropertyAccess() {
+        // GIVEN / WHEN
         val result = sampleDSL {
             sample = "dsl-sample"
             number = 999
@@ -149,24 +159,32 @@ class ImplierTest {
             list = listOf("dsl1")
         }
 
+        // THEN
         assertEquals("dsl-sample", result.sample)
         assertEquals(999, result.number)
         assertEquals("set-in-dsl", result.nullableField)
         assertEquals(listOf("dsl1"), result.list)
-        assertTrue(result is ImmutableSample, "DSL should instantiate ImmutableSample")
+        assertTrue(result is ImmutableSample)
+    }
 
-        // Using set* accessor functions
-        val resultWithAccessors = sampleDSL {
+    @Test
+    fun testDSLBuilderWithAccessorsAndNullableOmitted() {
+        // GIVEN / WHEN
+        val result = sampleDSL {
             setSample("accessor-sample")
             setNumber(888)
             setList(listOf("dsl2"))
         }
 
-        assertEquals("accessor-sample", resultWithAccessors.sample)
-        assertEquals(888, resultWithAccessors.number)
-        assertNull(resultWithAccessors.nullableField, "Nullable property should default to null in DSL")
+        // THEN
+        assertEquals("accessor-sample", result.sample)
+        assertEquals(888, result.number)
+        assertNull(result.nullableField)
+    }
 
-        // Omitting non-null property throws IllegalStateException
+    @Test
+    fun testDSLBuilderThrowsWhenRequiredPropertyOmitted() {
+        // GIVEN / WHEN / THEN
         assertThrows<IllegalStateException> {
             sampleDSL {
                 sample = "only-sample"
@@ -176,31 +194,32 @@ class ImplierTest {
 
     @Test
     fun testDtoAndPatching() {
+        // GIVEN
         val original = Sample(
             sample = "orig-title",
             number = 1,
             nullableField = "orig-note",
             list = listOf("initial")
         )
+        val patch1 = DtoSample(sample = "updated-title")
+        val patch2 = DtoSample(number = 100, nullableField = "new-note")
 
-        // toDto
+        // WHEN
         val dto = original.toDto()
+        val patched1 = original.toPatched(patch1)
+        val patched2 = patched1.toPatched(patch2)
+
+        // THEN
         assertEquals("orig-title", dto.sample)
         assertEquals(1, dto.number)
         assertEquals("orig-note", dto.nullableField)
         assertEquals(listOf("initial"), dto.list)
 
-        // Patch only single property
-        val patch1 = DtoSample(sample = "updated-title")
-        val patched1 = original.toPatched(patch1)
         assertEquals("updated-title", patched1.sample)
         assertEquals(1, patched1.number)
         assertEquals("orig-note", patched1.nullableField)
         assertEquals(listOf("initial"), patched1.list)
 
-        // Patch multiple properties
-        val patch2 = DtoSample(number = 100, nullableField = "new-note")
-        val patched2 = patched1.toPatched(patch2)
         assertEquals("updated-title", patched2.sample)
         assertEquals(100, patched2.number)
         assertEquals("new-note", patched2.nullableField)
@@ -209,69 +228,71 @@ class ImplierTest {
 
     @Test
     fun testAbstractClassSupport() {
+        // GIVEN
         val mutable = MutableAbstractSample(title = "AbstractTitle", count = 5)
+
+        // WHEN
+        val immutable = mutable.toImmutable()
+        val copy = immutable.copy(count = 10)
+        val fromFactory = AbstractSample(title = "FactoryTitle", count = 42)
+        val built = AbstractSampleBuilder()
+            .setTitle("BuilderAbstract")
+            .setCount(15)
+            .build()
+        val fromDsl = abstractSampleDSL {
+            title = "DSLAbstract"
+            count = 25
+        }
+        val dto = fromDsl.toDto()
+        val patched = fromDsl.toPatched(DtoAbstractSample(title = "PatchedAbstract"))
+
+        // THEN
         assertEquals("AbstractTitle", mutable.title)
         assertEquals(5, mutable.count)
         assertEquals("AbstractTitle: 5", mutable.display)
         assertEquals(10, mutable.doubleCount())
 
-        // Abstract class converts to Immutable
-        val immutable = mutable.toImmutable()
         assertEquals("AbstractTitle", immutable.title)
         assertEquals(5, immutable.count)
         assertEquals("AbstractTitle: 5", immutable.display)
         assertEquals(10, immutable.doubleCount())
 
-        // Abstract class realization is a data class (has no-arg constructor)
-        val copy = immutable.copy(count = 10)
         assertEquals("AbstractTitle", copy.title)
         assertEquals(10, copy.count)
         assertEquals(immutable, ImmutableAbstractSample(title = "AbstractTitle", count = 5))
 
-        // Factory function for abstract class
-        val fromFactory = AbstractSample(title = "FactoryTitle", count = 42)
         assertEquals("FactoryTitle", fromFactory.title)
         assertEquals(42, fromFactory.count)
         assertTrue(fromFactory is ImmutableAbstractSample)
 
-        // Builder with WITH_ACCESSORS on abstract class
-        val built = AbstractSampleBuilder()
-            .setTitle("BuilderAbstract")
-            .setCount(15)
-            .build()
         assertEquals("BuilderAbstract", built.title)
         assertEquals(15, built.count)
 
-        // DSL with PROPERTY_ACCESS on abstract class
-        val fromDsl = abstractSampleDSL {
-            title = "DSLAbstract"
-            count = 25
-        }
         assertEquals("DSLAbstract", fromDsl.title)
         assertEquals(25, fromDsl.count)
 
-        // DTO and patching on abstract class
-        val dto = fromDsl.toDto()
         assertEquals("DSLAbstract", dto.title)
         assertEquals(25, dto.count)
 
-        val patched = fromDsl.toPatched(DtoAbstractSample(title = "PatchedAbstract"))
         assertEquals("PatchedAbstract", patched.title)
         assertEquals(25, patched.count)
     }
 
     @Test
     fun testImmutableOnlySubset() {
-        val built = ImmutableOnlySampleBuilder()
+        // GIVEN
+        val builder = ImmutableOnlySampleBuilder()
             .id(1001L)
             .name("Subset")
-            .build()
 
+        // WHEN
+        val built: ImmutableOnlySample = builder.build()
+
+        // THEN
         assertEquals(1001L, built.id)
         assertEquals("Subset", built.name)
         assertTrue(built is ImmutableImmutableOnlySample)
 
-        // ImmutableOnlySample is a data class
         val copy = built.copy(name = "Updated")
         assertEquals(1001L, copy.id)
         assertEquals("Updated", copy.name)
@@ -279,36 +300,37 @@ class ImplierTest {
 
     @Test
     fun testMutableOnlySubset() {
-        // Factory with only MutableImpl
-        val created = MutableOnlySample(score = 98.5, flag = true)
-        assertEquals(98.5, created.score)
-        assertEquals(true, created.flag)
-        assertTrue(created is MutableMutableOnlySample)
-
-        // Builder with only MutableImpl
-        val built = MutableOnlySampleBuilder()
+        // GIVEN
+        val builder = MutableOnlySampleBuilder()
             .score(75.0)
             .flag(false)
-            .build()
-        assertEquals(75.0, built.score)
-        assertEquals(false, built.flag)
-        assertTrue(built is MutableMutableOnlySample)
 
-        // DSL with only MutableImpl
+        // WHEN
+        val created = MutableOnlySample(score = 98.5, flag = true)
+        val built = builder.build()
         val fromDsl = mutableOnlyDSL {
             score = 88.0
             flag = true
         }
+        val dto = fromDsl.toDto()
+        val patched = fromDsl.toPatched(DtoMutableOnlySample(score = 92.0))
+
+        // THEN
+        assertEquals(98.5, created.score)
+        assertEquals(true, created.flag)
+        assertTrue(created is MutableMutableOnlySample)
+
+        assertEquals(75.0, built.score)
+        assertEquals(false, built.flag)
+        assertTrue(built is MutableMutableOnlySample)
+
         assertEquals(88.0, fromDsl.score)
         assertEquals(true, fromDsl.flag)
         assertTrue(fromDsl is MutableMutableOnlySample)
 
-        // DTO and patching with only MutableImpl
-        val dto = fromDsl.toDto()
         assertEquals(88.0, dto.score)
         assertEquals(true, dto.flag)
 
-        val patched = fromDsl.toPatched(DtoMutableOnlySample(score = 92.0))
         assertEquals(92.0, patched.score)
         assertEquals(true, patched.flag)
         assertTrue(patched is MutableMutableOnlySample)
@@ -316,15 +338,19 @@ class ImplierTest {
 
     @Test
     fun testNestedDeclaration() {
+        // GIVEN
         val created = NestedSample(key = "k1", value = "v1")
+
+        // WHEN
+        val mutable = created.toMutable()
+        mutable.value = "v2"
+        val backToImmutable = mutable.toImmutable()
+
+        // THEN
         assertEquals("k1", created.key)
         assertEquals("v1", created.value)
         assertTrue(created is ImmutableNestedSample)
-
-        val mutable = created.toMutable()
-        mutable.value = "v2"
         assertEquals("v2", mutable.value)
-        val backToImmutable = mutable.toImmutable()
         assertEquals("v2", backToImmutable.value)
     }
 }
