@@ -1,4 +1,4 @@
-![Maven metadata URL](https://img.shields.io/maven-metadata/v?label=%24version&metadataUrl=https%3A%2F%2Fmaven.y9vad9.com%2Fcom%2Fy9vad9%2Fimplier%2Fimplier%2Fmaven-metadata.xml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.y9vad9.implier/implier)](https://central.sonatype.com/artifact/com.y9vad9.implier/implier)
 
 # implier
 
@@ -72,13 +72,13 @@ class FooDSLBuilderScope {
 fun foo(builder: FooDSLBuilderScope.() -> Unit): Foo { /* code */ }
 ```
 
-## Implementation
+## Setup
 
-For first, we need to add repository:
+Ensure `mavenCentral()` is present in your repositories:
 
 ```kotlin
 repositories {
-    maven("https://maven.y9vad9.com")
+    mavenCentral()
 }
 ```
 
