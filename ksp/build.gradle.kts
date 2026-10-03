@@ -1,42 +1,29 @@
 plugins {
-    id(Deps.Plugins.Configuration.Kotlin.Mpp)
-    id(Deps.Plugins.Deploy.Id)
+    alias(libs.plugins.kotlin.jvm)
+    `maven-publish`
 }
+
+group = "com.y9vad9.implier"
+version = "1.0.5"
 
 kotlin {
-    jvm()
-    sourceSets {
-        val jvmMain by getting {
-            dependencies {
-                implementation(Deps.Libs.KSP.Api)
-                implementation(Deps.Libs.KotlinPoet.KotlinPoet)
-                implementation(Deps.Libs.KotlinPoet.KSP)
-                implementation(Deps.Libs.Kotlin.Reflection)
-                implementation(project(":"))
-            }
-            kotlin.srcDir("src/main/kotlin")
-            resources.srcDir("src/main/resources")
-        }
-    }
+    jvmToolchain(21)
 }
 
-val deployProperties = rootProject.file("deploy.properties")
+dependencies {
+    compileOnly(libs.ksp.api)
+    implementation(libs.kotlinpoet)
+    implementation(libs.kotlinpoet.ksp)
+    implementation(project(":"))
+}
 
-deploy {
-    if (!deployProperties.exists())
-        ignore = true
-    else {
-        val properties = org.jetbrains.kotlin.konan.properties.loadProperties(deployProperties.absolutePath)
-        host = properties["host"] as String?
-        user = properties["user"] as String?
-        password = properties["password"] as String?
-        deployPath = properties["deployPath"] as String?
-
-        componentName = "kotlin"
-        group = AppInfo.PACKAGE
-        version = AppInfo.VERSION
-        artifactId = "ksp"
-        name = "implier ksp-implementation"
-        description = "Kotlin codegeneration library for Mutable & Immutable objects from interfaces."
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+            groupId = "com.y9vad9.implier"
+            artifactId = "ksp"
+            version = "1.0.5"
+        }
     }
 }

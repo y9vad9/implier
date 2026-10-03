@@ -1,20 +1,18 @@
 plugins {
-    id(Deps.Plugins.KSP.Id)
-    id(Deps.Plugins.Configuration.Kotlin.Jvm)
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.google.ksp)
 }
 
-sourceSets {
-    test {
-        java {
-            srcDir("build/generated/ksp/test/kotlin")
-        }
-    }
+kotlin {
+    jvmToolchain(21)
 }
 
 dependencies {
     implementation(project(":"))
-    implementation(Deps.Libs.Kotlin.JUnit)
-    kspTest(project(":ksp"))
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.kotlin.test.junit5)
+    testImplementation(libs.junit.jupiter)
+    kspTest(projects.ksp)
 }
 
 tasks.withType<Test> {
